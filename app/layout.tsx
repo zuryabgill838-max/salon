@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import a from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,42 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        {/* Logo */}
+        <a href="/" className="text-2xl font-bold text-pink-600">
+          Luxe Salon
+        </a>
+
+        {/* Navigation */}
+        <nav className="hidden md:flex items-center gap-8">
+          <a href="/" className="text-black hover:text-pink-600 transition">
+            Home
+          </a>
+          <a href="/services" className="text-black hover:text-pink-600 transition">
+            Services
+          </a>
+          <a href="/about-us" className="text-black hover:text-pink-600 transition">
+            About
+          </a>
+          <a href="/gallery" className="text-black hover:text-pink-600 transition">
+            Gallery
+          </a>
+          <a href="/contact" className="text-black hover:text-pink-600 transition">
+            Contact
+          </a>
+          {/* <a href="/practice" className="text-black hover:text-pink-600 transition">
+            Practice
+          </a> */}
+        </nav>
+
+       
+      </div>
+    </header>
+        {children}
+
+      </body>
     </html>
   );
 }
