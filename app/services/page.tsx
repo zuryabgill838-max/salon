@@ -3,14 +3,12 @@
 import { useEffect, useState } from "react";
 
 export default function Services() {
-  const [selectedService, setSelectedService] = useState(null);
-  const [message, setMessage] = useState("");
+  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     if (selectedService) {
-      setMessage(
-        `Great choice! You selected ${selectedService}.`
-      );
+      setMessage(`Great choice! You selected ${selectedService}.`);
     } else {
       setMessage("");
     }
@@ -74,12 +72,12 @@ export default function Services() {
         </h1>
 
         <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
-          Professional beauty services designed to help you
-          look and feel your best.
+          Professional beauty services designed to help you look and feel
+          your best.
         </p>
       </section>
 
-      {/* Effect ka result */}
+      {/* Selected service message */}
       {message && (
         <div className="mx-auto mb-8 max-w-7xl px-6">
           <div className="rounded-2xl bg-pink-50 p-5 text-center">
@@ -113,10 +111,9 @@ export default function Services() {
               </p>
 
               <button
-                onClick={() =>
-                  setSelectedService(service.title)
-                }
-                className="mt-6 rounded-full bg-pink-600 px-5 py-2 text-white"
+                type="button"
+                onClick={() => setSelectedService(service.title)}
+                className="mt-6 rounded-full bg-pink-600 px-5 py-2 text-white transition hover:bg-pink-700"
               >
                 Select
               </button>
