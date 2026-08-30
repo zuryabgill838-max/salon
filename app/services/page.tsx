@@ -1,126 +1,124 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Link from "next/link";
 
-export default function Services() {
-  const [selectedService, setSelectedService] = useState<string | null>(null);
-  const [message, setMessage] = useState<string>("");
+const services = [
+  {
+    id: 1,
+    name: "Haircut & Styling",
+    price: 2000,
+    duration: "45 min",
+  },
+  {
+    id: 2,
+    name: "Hair Coloring",
+    price: 5000,
+    duration: "2 hours",
+  },
+  {
+    id: 3,
+    name: "Facial",
+    price: 3000,
+    duration: "60 min",
+  },
+  {
+    id: 4,
+    name: "Manicure & Pedicure",
+    price: 2500,
+    duration: "60 min",
+  },
+  {
+    id: 5,
+    name: "Bridal Makeup",
+    price: 8000,
+    duration: "90 min",
+  },
+];
 
-  useEffect(() => {
-    if (selectedService) {
-      setMessage(`Great choice! You selected ${selectedService}.`);
-    } else {
-      setMessage("");
+export default function ServicesPage() {
+  const [selectedServices, setSelectedServices] = useState<any[]>([]);
+
+  const addService = (service: any) => {
+    const alreadySelected = selectedServices.some(
+      (item) => item.id === service.id
+    );
+
+    if (alreadySelected) {
+      return;
     }
-  }, [selectedService]);
 
-  const services = [
-    {
-      icon: "💇‍♀️",
-      title: "Hair Styling",
-      description:
-        "Professional haircuts, styling, coloring and nourishing treatments.",
-      price: "$30",
-    },
-    {
-      icon: "💄",
-      title: "Makeup",
-      description:
-        "Elegant makeup for weddings, parties and special occasions.",
-      price: "$50",
-    },
-    {
-      icon: "💅",
-      title: "Nails",
-      description:
-        "Manicure, pedicure and beautiful custom nail art.",
-      price: "$25",
-    },
-    {
-      icon: "✨",
-      title: "Facial",
-      description:
-        "Relaxing facials designed to refresh and brighten your skin.",
-      price: "$40",
-    },
-    {
-      icon: "🧖‍♀️",
-      title: "Spa",
-      description:
-        "Relax your body and mind with our peaceful spa treatments.",
-      price: "$60",
-    },
-    {
-      icon: "👰‍♀️",
-      title: "Bridal Package",
-      description:
-        "Complete bridal beauty packages for your special day.",
-      price: "$150",
-    },
-  ];
+    const updatedServices = [...selectedServices, service];
+
+    setSelectedServices(updatedServices);
+
+    localStorage.setItem(
+      "selectedServices",
+      JSON.stringify(updatedServices)
+    );
+  };
 
   return (
-    <main>
-      {/* Heading */}
-      <section className="px-6 py-24 text-center">
-        <p className="text-sm font-semibold uppercase tracking-widest text-pink-600">
-          What We Do
-        </p>
+    <main className="min-h-screen bg-pink-50 px-6 py-12">
+      <div className="mx-auto max-w-7xl">
 
-        <h1 className="mt-4 text-5xl font-bold md:text-6xl">
-          Our Services
-        </h1>
+        {/* Heading */}
+        <div className="mb-10 text-center">
+          <h1 className="text-4xl font-bold text-gray-900">
+            Our Services
+          </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
-          Professional beauty services designed to help you look and feel
-          your best.
-        </p>
-      </section>
-
-      {/* Selected service message */}
-      {message && (
-        <div className="mx-auto mb-8 max-w-7xl px-6">
-          <div className="rounded-2xl bg-pink-50 p-5 text-center">
-            <p className="font-semibold text-pink-600">
-              {message}
-            </p>
-          </div>
+          <p className="mt-3 text-gray-600">
+            Choose the services you want to book.
+          </p>
         </div>
-      )}
 
-      {/* Services */}
-      <section className="px-6 py-24">
-        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* Services */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
           {services.map((service) => (
             <div
-              key={service.title}
-              className="rounded-3xl border p-8 shadow-sm transition hover:-translate-y-2 hover:shadow-xl"
+              key={service.id}
+              className="rounded-2xl bg-white p-6 shadow-sm"
             >
-              <div className="text-5xl">{service.icon}</div>
-
-              <h2 className="mt-6 text-2xl font-bold">
-                {service.title}
+              <h2 className="text-xl font-semibold text-gray-900">
+                {service.name}
               </h2>
 
-              <p className="mt-4 text-gray-500">
-                {service.description}
+              <p className="mt-2 text-sm text-gray-500">
+                Duration: {service.duration}
               </p>
 
-              <p className="mt-6 text-xl font-bold text-pink-600">
-                From {service.price}
+              <p className="mt-4 text-2xl font-bold text-pink-600">
+                Rs. {service.price}
               </p>
 
               <button
-                type="button"
-                onClick={() => setSelectedService(service.title)}
-                className="mt-6 rounded-full bg-pink-600 px-5 py-2 text-white transition hover:bg-pink-700"
+                onClick={() => addService(service)}
+                className="mt-5 w-full rounded-lg bg-pink-600 px-4 py-3 text-white transition hover:bg-pink-700"
               >
-                Select
+                Add Service
               </button>
             </div>
           ))}
+
         </div>
-      </section>
+
+        {/* View Booking */}
+        {selectedServices.length > 0 && (
+          <div className="mt-10 text-center">
+
+            <Link
+              href="/my-booking"
+              className="inline-block rounded-lg bg-black px-8 py-3 font-medium text-white hover:bg-gray-800"
+            >
+              View My Booking ({selectedServices.length})
+            </Link>
+
+          </div>
+        )}
+
+      </div>
     </main>
   );
 }
